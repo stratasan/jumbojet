@@ -1,9 +1,9 @@
 from setuptools import setup
 
 NAME = "jumbojet"
-DESCRIPTION = "Data stuff"
+DESCRIPTION = "Parse CSV files and generate json/django orm models"
 AUTHOR = "Matt George"
-AUTHOR_EMAIL = "mgeorge@gmail.com"
+AUTHOR_EMAIL = "mgeorge@stratasan.com"
 URL = ""
 VERSION = '0.1.0'
 
