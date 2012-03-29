@@ -191,11 +191,9 @@ def build_column(cdict):
     return ''
 
 def build_model(name, columns):
-    model = """
-    class %s(models.Model):
-    """
+    model = """class %s(models.Model):\n"""
     model = model % name
-    for col in columns:
+    for key, col in columns.items():
         cstring = build_column(col)
         model += cstring + '\n'
     print model
@@ -254,10 +252,10 @@ def parse_csv(filename):
         js[c.name.lower()] = c.to_dict()
     return js
 
-def parse_json(filename):
+def parse_json(filename, class_name):
     fp = open(filename, 'rb')
-    js = json.load(fp)
-    build_model('SampleClass',js)
+    js = json.load(fp, object_pairs_hook=OrderedDict)
+    build_model(class_name,js)
 
 class DictDiffer(object):
     """
