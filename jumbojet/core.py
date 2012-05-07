@@ -145,7 +145,7 @@ def do_stuff(filename, override):
             except ValueError:
                 true_index=100
 
-            if true_index > current_index:
+            if true_index >= current_index:
                 if true_index == 100:
                     f_type = 'str'
                     col.length = col.length if col.length >= len(value) else len(value)
@@ -177,12 +177,12 @@ def parse_overrides(olist):
     return {}
 
 type_to_field = {
-    'str':'    %(name)s = models.Charfield(max_length=%(length)s, null=%(nullable)s)',
-    'int': '    %(name)s = models.IntegerField(null=%(nullable)s)',
-    'datetime': '    %(name)s = models.DateTimeField(null=%(nullable)s)',
-    'bool': '    %(name)s = models.BooleanField(null=%(nullable)s)',
-    'float': '    %(name)s = models.FloatField(null=%(nullable)s)',
-    'decimal': '    %s(name)s = models.DecimalField()'
+    'str':'    %(name)s = models.CharField(help_text="",max_length=%(length)s, null=%(nullable)s)',
+    'int': '    %(name)s = models.IntegerField(help_text="",null=%(nullable)s)',
+    'datetime': '    %(name)s = models.DateTimeField(help_text="",null=%(nullable)s)',
+    'bool': '    %(name)s = models.BooleanField(help_text="", null=%(nullable)s)',
+    'float': '    %(name)s = models.DecimalField(help_text="",max_digits=10,decimal_places=2,null=%(nullable)s)',
+    'decimal': '    %s(name)s = models.DecimalField(help_text="",max_digits=10,decimal_places=2,null=%(nullable)s)'
 }
 def build_column(cdict):
     if cdict:
@@ -230,10 +230,11 @@ def parse_csv(filename):
             except ValueError:
                 true_index=100
 
-            if true_index > current_index:
+            if true_index >= current_index:
                 if true_index == 100:
                     f_type = 'str'
-                    col.length = col.length if col.length >= len(value) else len(value)
+                    if col.length < len(value):
+                        col.length = len(value)
                 else:
                     f = f_list[true_index]
                     f_type = f.__name__.split('_')[1]
